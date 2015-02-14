@@ -292,7 +292,6 @@ public class ventanaPaint extends javax.swing.JFrame {
         circulo.y = evt.getY();
         circulo.width = circulo.x - evt.getX();
         circulo.height = circulo.y- evt.getY();
-        
         Graphics2D g2 = (Graphics2D) jPanel1.getGraphics();
         g2.draw(circulo);
         }else if(square)
@@ -368,8 +367,7 @@ public class ventanaPaint extends javax.swing.JFrame {
     private void jButton4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MousePressed
         //el usuario ha elegido un color
         colorSeleccionado = jColorChooser1.getColor();
-        jDialog1.setVisible(false);
-        
+        jDialog1.setVisible(false);      
     }//GEN-LAST:event_jButton4MousePressed
 
     private void jButton5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MousePressed
@@ -426,7 +424,7 @@ public class ventanaPaint extends javax.swing.JFrame {
     private void Borde1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Borde1MousePressed
         String nombreBorde ="";
         borde++;
-        if(borde > 10)
+        if(borde > 15)
             borde=1;
         nombreBorde = "Borde:"+borde;
         Borde1.setLabel(nombreBorde);                  
