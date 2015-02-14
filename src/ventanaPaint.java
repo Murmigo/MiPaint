@@ -28,8 +28,8 @@ public class ventanaPaint extends javax.swing.JFrame {
     Ellipse2D.Double circulo = new Ellipse2D.Double();
     Rectangle2D.Double cuadrado = new Rectangle2D.Double();
     
-    boolean circle = false, square = false, line = true;
-    
+    boolean circle = false, square = false, line = true, discontinua = false, relleno = false;
+    int borde = 1;
     
     //en una variable de tipo BufferedImage puedo
     //almacenar una imagen
@@ -85,6 +85,9 @@ public class ventanaPaint extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        Borde1 = new javax.swing.JButton();
 
         jButton4.setText("Aceptar");
         jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -201,17 +204,41 @@ public class ventanaPaint extends javax.swing.JFrame {
             }
         });
 
+        jButton7.setText("Discontinua");
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton7MousePressed(evt);
+            }
+        });
+
+        jButton8.setText("Relleno");
+        jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton8MousePressed(evt);
+            }
+        });
+
+        Borde1.setText("Borde:1");
+        Borde1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Borde1MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Borde1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(22, 22, 22)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -220,19 +247,23 @@ public class ventanaPaint extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 14, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(86, 86, 86))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Borde1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
 
         pack();
@@ -282,76 +313,48 @@ public class ventanaPaint extends javax.swing.JFrame {
         Graphics2D g2 = (Graphics2D) jPanel1.getGraphics();
         //borro el jPanel con lo que hay en el buffer
         g2.drawImage(buffer, 0, 0, null);
+        g2.setColor(colorSeleccionado);
         
         if(line){
             linea.x2 = evt.getX();
             linea.y2 = evt.getY();
-            float dash[] = {10.0f};
-            g2.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
-            g2.setColor(colorSeleccionado);
             g2.draw(linea);
         }else if(circle){
             circulo.width = evt.getX() - circulo.x;
             circulo.height = evt.getY() - circulo.y;
-            float dash[] = {10.0f};
-            g2.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
-            g2.setColor(colorSeleccionado);
             g2.draw(circulo);
         }else if(square){
             cuadrado.height = evt.getY() - cuadrado.y;
             cuadrado.width = evt.getX() - cuadrado.x;
-            float dash[] = {10.0f};
-            g2.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
-            g2.setColor(colorSeleccionado);
             g2.draw(cuadrado);
         }
-        //pinto la linea en el Jpanel
-        float dash[] = {10.0f};
-        g2.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
-        g2.setColor(colorSeleccionado);
-        g2.draw(linea);
-        
     }//GEN-LAST:event_jPanel1MouseDragged
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
         //apunta al buffer
-        if(line){
-            Graphics2D g2 = (Graphics2D) buffer.getGraphics();       
-            linea.x2 = evt.getX();
-            linea.y2 = evt.getY();        
-            //pinto la linea en el buffer
-            float dash[] = {10.0f};
-            g2.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
+        Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+        g2.setStroke(new BasicStroke(borde));
+        if(discontinua){
+           float dash[] = {10.0f};
+           g2.setStroke(new BasicStroke(borde, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
+        }
             g2.setColor(colorSeleccionado);
+        if(line){
             g2.draw(linea);    
-            g2 = (Graphics2D) jPanel1.getGraphics();
-            //borro el jPanel con lo que hay en el buffer
-            g2.drawImage(buffer, 0, 0, null);
         }
         else if(circle){
-            Graphics2D g2 = (Graphics2D) buffer.getGraphics();       
-            //pinto el circulo en el buffer
-            float dash[] = {10.0f};
-            g2.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
-            g2.setColor(colorSeleccionado);
-            g2.draw(circulo);    
-            g2 = (Graphics2D) jPanel1.getGraphics();
-            //borro el jPanel con lo que hay en el buffer
-            g2.drawImage(buffer, 0, 0, null);
+            g2.draw(circulo);  
+            if(relleno)
+                g2.fill(circulo);
         }
         else if(square){
-            Graphics2D g2 = (Graphics2D) buffer.getGraphics();       
-           // cuadrado.height =evt.getY();
-           // cuadrado.width =evt.getX();
-            //pinto la linea en el buffer
-            float dash[] = {10.0f};
-            g2.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
-            g2.setColor(colorSeleccionado);
-            g2.draw(cuadrado);    
-            g2 = (Graphics2D) jPanel1.getGraphics();
-            //borro el jPanel con lo que hay en el buffer
-            g2.drawImage(buffer, 0, 0, null);
+            g2.draw(cuadrado);
+            if(relleno)
+                g2.fill(cuadrado);
         }
+        g2 = (Graphics2D) jPanel1.getGraphics();
+        //borro el jPanel con lo que hay en el buffer
+        g2.drawImage(buffer, 0, 0, null);
     }//GEN-LAST:event_jPanel1MouseReleased
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -399,6 +402,36 @@ public class ventanaPaint extends javax.swing.JFrame {
         line = true;
     }//GEN-LAST:event_jButton6MousePressed
 
+    private void jButton7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MousePressed
+        String continuidad ="";
+        if(discontinua == true){
+            discontinua = false;
+            continuidad = "Discontinua";
+        }
+        else {
+            discontinua = true;
+            continuidad ="Continua";
+        }
+        jButton7.setLabel(continuidad);
+    }//GEN-LAST:event_jButton7MousePressed
+
+    private void jButton8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MousePressed
+        if(relleno == true){
+            relleno = false;
+        }else {
+            relleno = true;
+        }
+    }//GEN-LAST:event_jButton8MousePressed
+
+    private void Borde1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Borde1MousePressed
+        String nombreBorde ="";
+        borde++;
+        if(borde > 10)
+            borde=1;
+        nombreBorde = "Borde:"+borde;
+        Borde1.setLabel(nombreBorde);                  
+    }//GEN-LAST:event_Borde1MousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -435,12 +468,15 @@ public class ventanaPaint extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Borde1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel jPanel1;
