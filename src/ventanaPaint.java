@@ -151,7 +151,7 @@ public class ventanaPaint extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 555, Short.MAX_VALUE)
+            .addGap(0, 551, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +160,6 @@ public class ventanaPaint extends javax.swing.JFrame {
 
         jButton1.setText("Circulo");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jButton1MousePressed(evt);
             }
@@ -174,11 +171,6 @@ public class ventanaPaint extends javax.swing.JFrame {
                 jButton2MousePressed(evt);
             }
         });
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jButton3.setText("Color");
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -186,25 +178,17 @@ public class ventanaPaint extends javax.swing.JFrame {
                 jButton3MousePressed(evt);
             }
         });
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
+        jButton6.setForeground(new java.awt.Color(0, 0, 255));
         jButton6.setText("Linea");
         jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jButton6MousePressed(evt);
             }
         });
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
 
-        jButton7.setText("Discontinua");
+        jButton7.setText("Discont.");
+        jButton7.setToolTipText("");
         jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jButton7MousePressed(evt);
@@ -239,7 +223,7 @@ public class ventanaPaint extends javax.swing.JFrame {
                     .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Borde1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(22, 22, 22)
+                .addGap(26, 26, 26)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -268,11 +252,6 @@ public class ventanaPaint extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
         //empieza a dibujar la linea
@@ -356,10 +335,6 @@ public class ventanaPaint extends javax.swing.JFrame {
         g2.drawImage(buffer, 0, 0, null);
     }//GEN-LAST:event_jPanel1MouseReleased
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MousePressed
         jDialog1.setVisible(true);
     }//GEN-LAST:event_jButton3MousePressed
@@ -367,44 +342,36 @@ public class ventanaPaint extends javax.swing.JFrame {
     private void jButton4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MousePressed
         //el usuario ha elegido un color
         colorSeleccionado = jColorChooser1.getColor();
-        jDialog1.setVisible(false);      
+        jDialog1.setVisible(false);  
+        if(colorSeleccionado != jButton3.getForeground())
+            jButton3.setBackground(colorSeleccionado);
+        else
+            jButton3.setBackground(null);
     }//GEN-LAST:event_jButton4MousePressed
 
     private void jButton5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MousePressed
         jDialog1.setVisible(false);
     }//GEN-LAST:event_jButton5MousePressed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1MouseClicked
-
-    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
-        circle = true;
-        square = false;
-        line = false;
-    }//GEN-LAST:event_jButton1MousePressed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
        circle = false;
         square = true;
         line = false;
+        cambiarColorLabel(2);
     }//GEN-LAST:event_jButton2MousePressed
 
     private void jButton6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MousePressed
         circle = false;
         square = false;
         line = true;
+        cambiarColorLabel(0);
     }//GEN-LAST:event_jButton6MousePressed
 
     private void jButton7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MousePressed
         String continuidad ="";
         if(discontinua == true){
             discontinua = false;
-            continuidad = "Discontinua";
+            continuidad = "Discont.";
         }
         else {
             discontinua = true;
@@ -416,8 +383,10 @@ public class ventanaPaint extends javax.swing.JFrame {
     private void jButton8MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MousePressed
         if(relleno == true){
             relleno = false;
+            jButton8.setBackground(null);
         }else {
             relleno = true;
+            jButton8.setBackground(Color.CYAN);
         }
     }//GEN-LAST:event_jButton8MousePressed
 
@@ -427,9 +396,44 @@ public class ventanaPaint extends javax.swing.JFrame {
         if(borde > 15)
             borde=1;
         nombreBorde = "Borde:"+borde;
-        Borde1.setLabel(nombreBorde);                  
+        Borde1.setLabel(nombreBorde);
+        
+        if(borde == 15)
+            Borde1.setForeground(Color.RED);
+        else
+            Borde1.setForeground(null);
     }//GEN-LAST:event_Borde1MousePressed
 
+    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+        circle = true;
+        square = false;
+        line = false;
+        cambiarColorLabel(1);
+    }//GEN-LAST:event_jButton1MousePressed
+    private void cambiarColorLabel(int elegido)
+    {
+        switch(elegido)
+        {
+            case 0:
+                jButton6.setForeground(Color.BLUE);
+                jButton1.setForeground(null);
+                jButton2.setForeground(null);                
+                break;
+            case 1:
+                jButton6.setForeground(null);
+                jButton1.setForeground(Color.BLUE);
+                jButton2.setForeground(null);
+                break;
+            case 2:
+                jButton6.setForeground(null);
+                jButton1.setForeground(null);
+                jButton2.setForeground(Color.BLUE);
+                break;
+        
+        
+        }
+    
+    }
     /**
      * @param args the command line arguments
      */
