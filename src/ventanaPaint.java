@@ -15,58 +15,52 @@ import java.awt.image.BufferedImage;
  */
 
 /**
- *
- * @author Virtus
+ * Luis Guillermo Abarca
+ * 
  */
 public class ventanaPaint extends javax.swing.JFrame {
+    private static int MAXBORDE = 15;
     
-    
-    
-    //creamos una variable de tipo linea
-    //para guardar la linea que dibuja el usuario
-    Line2D.Double linea = new Line2D.Double();
-    Ellipse2D.Double circulo = new Ellipse2D.Double();
-    Rectangle2D.Double cuadrado = new Rectangle2D.Double();
-    
+    //Declaramos las variables de los objetos que vamos a pintar
+    Line2D.Double linea = new Line2D.Double(); //Variable Linea
+    Ellipse2D.Double circulo = new Ellipse2D.Double();//Varialble Circulo
+    Rectangle2D.Double cuadrado = new Rectangle2D.Double();//Variable Cuadradp
+    //Declaramos los booleanos, que nos servirán para controlar el programa
+    //circle, square y line, controlan que dibujar. Discontinua y relleno activaran o desactivaran la linea discontinua y el relleno 
     boolean circle = false, square = false, line = true, discontinua = false, relleno = false;
+    //Declaramos un entero para que controle el borde y lo inicializamos a 1
     int borde = 1;
+    //Declaramos una variable tipo Color, y la inicializamos a negro
+    Color colorSeleccionado = Color.black; 
     
-    //en una variable de tipo BufferedImage puedo
-    //almacenar una imagen
-    private BufferedImage buffer = null;
-    
-    //almacena el color seleccionado
-    Color colorSeleccionado = Color.black;
-    
-   
+    //Declaramos una variable para almacenar Imagenes, que nos servirá como auxiliar
+    private BufferedImage buffer = null;  
+ 
+      
     public ventanaPaint() {
         initComponents();
+        //Le damos un tamaño a jDialog1 para tenerlo controlado cuando salga
         jDialog1.setSize(800, 600);
+        //Declaramos dos enteros anchoPanel y altoPanel, en los que guardaremos las medidas de jPanel1 
         int anchoPanel = jPanel1.getWidth();
-        int altoPanel = jPanel1.getHeight();
-        
-        //enlazo el buffer al jPanel
+        int altoPanel = jPanel1.getHeight();        
+        //Haremos que el buffer "actue como jPanel1", le daremos las mismas medidas que este
         buffer = (BufferedImage) jPanel1.createImage(anchoPanel,altoPanel);
-        
-        //inicializa el buffer para que sea de color blanco
+       //A continuacion terminamos de inicializar el buffer
         Graphics2D g2 = buffer.createGraphics();
         g2.setColor(Color.white);
         g2.fillRect(0, 0, anchoPanel, altoPanel);
     }
-    
+    //Necesitamos cambiar la funcion paint que viene por defecto
     @Override
     public void paint (Graphics g){
-        //llamo al paintComponents de la clase jFrame
-        //para que se pinten bien los objetos de la aplicación
-        super.paintComponents(g);
-        
-        //a continuación apunto al jPanel
+        //Para que los objetos se pinten correctamente tendremos que llamar a paintComponents
+        super.paintComponents(g);       
+        //Le daremos a g2 el control de jPanel1
         Graphics2D g2 = (Graphics2D) jPanel1.getGraphics();
-        //pinto el buffer sobre el jPanel
-        g2.drawImage (buffer, 0, 0, null);
-        
+        //Dibujaremos el buffer en  jPanel1
+        g2.drawImage (buffer, 0, 0, null);       
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -254,32 +248,31 @@ public class ventanaPaint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-        //empieza a dibujar la linea
-        //así que almaceno en x1 y1 el punto donde se ha producido
-        //el evento
-        if(line){
+        //Empezamos inicializando el objeto que toque
+        if(line){   //Inicializa la linea
         linea.x1 = evt.getX();
         linea.x2 = evt.getX();
         linea.y1 = evt.getY();
         linea.y2 = evt.getY();
-        
+        //Dibuja la linea en el panel
         Graphics2D g2 = (Graphics2D) jPanel1.getGraphics();
         g2.draw(linea);
         }
-        else if(circle){
+        else if(circle){ //Injcializamos el Circulo
         circulo.x = evt.getX();
         circulo.y = evt.getY();
         circulo.width = circulo.x - evt.getX();
         circulo.height = circulo.y- evt.getY();
+        //Dibujamos el circulo en el panel
         Graphics2D g2 = (Graphics2D) jPanel1.getGraphics();
         g2.draw(circulo);
-        }else if(square)
+        }else if(square)//Inicializamos el Cuadrado
         {
         cuadrado.x = evt.getX();
         cuadrado.y = evt.getY();
         cuadrado.width = cuadrado.x - evt.getX();
         cuadrado.height = cuadrado.y- evt.getY();
-        
+        //Dibujamos el cuadrado en el panel
         Graphics2D g2 = (Graphics2D) jPanel1.getGraphics();
         g2.draw(cuadrado);
         }
@@ -287,80 +280,84 @@ public class ventanaPaint extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1MousePressed
 
     private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
-        //apunta al jPanel
+        //Le damos a g2 el control de jPanel1
         Graphics2D g2 = (Graphics2D) jPanel1.getGraphics();
-        //borro el jPanel con lo que hay en el buffer
+        //Actualizamos jPanel con el contenido del buffer
         g2.drawImage(buffer, 0, 0, null);
         g2.setColor(colorSeleccionado);
-        
+        //Comprobamos que estamos dibujando con los booleanos
         if(line){
             linea.x2 = evt.getX();
             linea.y2 = evt.getY();
             g2.draw(linea);
         }else if(circle){
-            circulo.width = evt.getX() - circulo.x;
+            circulo.width = evt.getX() - circulo.x; // tendremos que restarle x e y respectivamente para que el circulo sea preciso
             circulo.height = evt.getY() - circulo.y;
             g2.draw(circulo);
         }else if(square){
-            cuadrado.height = evt.getY() - cuadrado.y;
-            cuadrado.width = evt.getX() - cuadrado.x;
+            cuadrado.height = evt.getY() - cuadrado.y; // tendremos que restarle x e y respectivamente para que el cuadrado sea preciso
+            cuadrado.width = evt.getX() - cuadrado.x;  //Esto es asi, porque tenemos que partir como punto 0,0 el boton donde se incio el evento
             g2.draw(cuadrado);
         }
     }//GEN-LAST:event_jPanel1MouseDragged
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
-        //apunta al buffer
+        //Ahora g2 cogerá el control del buffer
         Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+        //Configuramos el tamaño del borde mediante una variable entera "borde"
         g2.setStroke(new BasicStroke(borde));
+        //Comprobamos si tiene que dibujar la linea discontinua
         if(discontinua){
            float dash[] = {10.0f};
            g2.setStroke(new BasicStroke(borde, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f,dash, 0.0f));
         }
-            g2.setColor(colorSeleccionado);
+            g2.setColor(colorSeleccionado);//cambiamos el color del objeto a pintar
         if(line){
             g2.draw(linea);    
         }
         else if(circle){
             g2.draw(circulo);  
-            if(relleno)
+            if(relleno) //si relleno esta activado rellena el circulo
                 g2.fill(circulo);
         }
         else if(square){
             g2.draw(cuadrado);
-            if(relleno)
+            if(relleno)//si relleno esta activado rellena el cuadrado
                 g2.fill(cuadrado);
         }
+        //Ahora apuntaremos a jPanel para actualizar con lo que acabamos de dibujar sobre el buffer
         g2 = (Graphics2D) jPanel1.getGraphics();
-        //borro el jPanel con lo que hay en el buffer
         g2.drawImage(buffer, 0, 0, null);
     }//GEN-LAST:event_jPanel1MouseReleased
 
     private void jButton3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MousePressed
-        jDialog1.setVisible(true);
+        jDialog1.setVisible(true);//Al presionar Color, se abrirá la ventana emergente del selector de color, esto lo hara visible
     }//GEN-LAST:event_jButton3MousePressed
 
     private void jButton4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MousePressed
-        //el usuario ha elegido un color
+        //jColorChooser1, coge el color que ha seleccionado el usuario, esto lo guardamos en colorSeleccionado.
         colorSeleccionado = jColorChooser1.getColor();
-        jDialog1.setVisible(false);  
-        if(colorSeleccionado != jButton3.getForeground())
+        jDialog1.setVisible(false);  //"Cerramos" la ventana emergente
+        if(colorSeleccionado != jButton3.getForeground()) // si el colorseleccionado no es el mismo que el color de las letras, el color del fondo será cambiado
             jButton3.setBackground(colorSeleccionado);
         else
             jButton3.setBackground(null);
     }//GEN-LAST:event_jButton4MousePressed
 
     private void jButton5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MousePressed
-        jDialog1.setVisible(false);
+        jDialog1.setVisible(false);//Al darle a Cancelar cerramos la ventana emergente
     }//GEN-LAST:event_jButton5MousePressed
 
     private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
-       circle = false;
+      //Activa la opcion cuadrado
+        circle = false;
         square = true;
         line = false;
         cambiarColorLabel(2);
     }//GEN-LAST:event_jButton2MousePressed
 
     private void jButton6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MousePressed
+         //Activa la opcion linea
         circle = false;
         square = false;
         line = true;
@@ -391,26 +388,28 @@ public class ventanaPaint extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8MousePressed
 
     private void Borde1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Borde1MousePressed
+       //Cada vez que el usuario pulse este boton el borde aumentara en 1 hasta alcanzar un máximo de MAXBORDE
         String nombreBorde ="";
         borde++;
-        if(borde > 15)
+        if(borde > MAXBORDE)
             borde=1;
         nombreBorde = "Borde:"+borde;
         Borde1.setLabel(nombreBorde);
         
-        if(borde == 15)
+        if(borde == MAXBORDE)
             Borde1.setForeground(Color.RED);
         else
             Borde1.setForeground(null);
     }//GEN-LAST:event_Borde1MousePressed
 
     private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+         //Activa la opcion circulo
         circle = true;
         square = false;
         line = false;
         cambiarColorLabel(1);
     }//GEN-LAST:event_jButton1MousePressed
-    private void cambiarColorLabel(int elegido)
+    private void cambiarColorLabel(int elegido)//Cambia el color de la letra de los botones segun lo que se este dibujando
     {
         switch(elegido)
         {
